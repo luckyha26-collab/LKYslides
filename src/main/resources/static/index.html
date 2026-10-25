@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LKYslides — AI Presentation Generator (Watermark-Free & Humanized)</title>
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body class="theme-obsidian">
+
+  <!-- ════════════════════ TOP NAVIGATION BAR ════════════════════ -->
+  <header class="gamma-header">
+    <div class="header-left">
+      <div class="gamma-logo" onclick="switchView('prompt')">
+        <div class="logo-icon-wrap">
+          <span class="logo-sparkle">✦</span>
+          <span class="logo-glow"></span>
+        </div>
+        <span class="logo-text">LKY<span class="logo-accent">slides</span></span>
+        <span class="logo-badge">ENGINE</span>
+      </div>
+
+      <div class="breadcrumb-separator">/</div>
+      <div class="deck-title-breadcrumb" id="headerDeckTitle" title="Click to rename" contenteditable="true" spellcheck="false">
+        Untitled Presentation
+      </div>
+    </div>
+
+    <div class="header-center">
+      <nav class="gamma-nav-tabs">
+        <button type="button" class="nav-tab-btn active" id="tabPrompt" onclick="switchView('prompt')">
+          <span class="tab-icon">✨</span> Prompt
+        </button>
+        <button type="button" class="nav-tab-btn" id="tabOutline" onclick="switchView('outline')" disabled>
+          <span class="tab-icon">📋</span> Outline
+        </button>
+        <button type="button" class="nav-tab-btn" id="tabDeck" onclick="switchView('deck')" disabled>
+          <span class="tab-icon">🎴</span> Deck Studio
+        </button>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <!-- Theme Switcher Pill -->
+      <button type="button" class="theme-picker-pill" id="themePickerBtn" onclick="toggleThemeModal()">
+        <span class="theme-swatch-dot" id="activeThemeDot"></span>
+        <span id="activeThemeLabel">Obsidian Night</span>
+        <span class="pill-chevron">▾</span>
+      </button>
+
+      <!-- Present Mode Button -->
+      <button type="button" class="btn-present-mode" id="presentBtn" onclick="startPresentationMode()" disabled>
+        <span class="btn-icon">▶</span> Present
+      </button>
+
+      <!-- Export PPTX Button -->
+      <button type="button" class="btn-export-pptx" id="exportPptxBtn" onclick="exportCurrentDeckPptx()">
+        <span class="btn-icon">⬇</span>
+        <span>Export PPTX</span>
+        <span class="export-badge-clean">No Watermark</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ════════════════════ MAIN CONTAINER ════════════════════ -->
+  <main class="gamma-viewport">
+
+    <!-- ──────────────── VIEW 1: MAGIC PROMPT SCREEN ──────────────── -->
+    <section class="gamma-view" id="viewPrompt">
+      <div class="hero-prompt-container">
+        
+        <div class="gamma-pill-tag">
+          <span class="pill-dot"></span> Academic Capstone Standard • Abstract, Scope, Methodology & Stack • Zero Watermarks
+        </div>
+
+        <h1 class="gamma-hero-title">
+          College & Technical Presentations<br />
+          <span class="gradient-text">Engineered for Your Project.</span>
+        </h1>
+
+        <!-- Format Mode Switcher -->
+        <div class="format-chips-bar">
+          <button type="button" class="format-chip active" data-format="engineering">
+            <span class="chip-icon">🎓</span> Engineering / College Project
+          </button>
+          <button type="button" class="format-chip" data-format="research">
+            <span class="chip-icon">📄</span> Research Paper
+          </button>
+          <button type="button" class="format-chip" data-format="technical">
+            <span class="chip-icon">⚡</span> System Architecture
+          </button>
+        </div>
+
+        <!-- Prompt Textarea Card -->
+        <div class="prompt-input-card">
+          <div class="prompt-input-header">
+            <span class="input-sparkle">✦</span>
+            <span class="input-helper">Enter project topic or paste your syllabus / abstract / notes</span>
+          </div>
+
+          <textarea
+            id="promptTopic"
+            class="gamma-textarea"
+            rows="3"
+            placeholder="e.g. Autonomous Drone Navigation using Visual SLAM, or paste your Abstract, Objectives, Scope, and Methodology..."
+          ></textarea>
+
+          <!-- Prompt Footer with Quick Settings -->
+          <div class="prompt-input-footer">
+            <div class="footer-left">
+              <span class="char-count" id="promptCharCount">0 characters</span>
+            </div>
+            <div class="footer-right">
+              <button type="button" class="btn-toggle-options" onclick="toggleAdvancedOptions()">
+                <span class="opt-icon">⚙️</span>
+                <span id="optToggleText">Customize Credentials & Authors</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Inspiration Topic Pills -->
+        <div class="inspiration-section">
+          <span class="inspiration-label">Try an example topic:</span>
+          <div class="inspiration-pills">
+            <button type="button" class="insp-pill highlight" onclick="fillPrompt('Autonomous Drone Navigation using Visual SLAM: Real-Time Edge Odometry, Loop Closure, and ORB-SLAM3 in GPS-Denied Environments')">
+              🛸 Visual SLAM Drone
+            </button>
+            <button type="button" class="insp-pill" onclick="fillPrompt('Zero-Trust Cybersecurity Architecture: Continuous Authentication, Micro-Segmentation, and Threat Intelligence')">
+              🔒 Zero-Trust Cyber Security
+            </button>
+            <button type="button" class="insp-pill" onclick="fillPrompt('Decarbonizing Global Steel Production with Green Hydrogen: Direct Iron Reduction and Renewable Electrolysis')">
+              🌿 Green Hydrogen Steel
+            </button>
+            <button type="button" class="insp-pill" onclick="fillPrompt('Quantum Key Distribution & Post-Quantum Cryptography: BB84 Protocol, Decoy States, and Lattice Resilience')">
+              ⚛️ Quantum Cryptography
+            </button>
+            <button type="button" class="insp-pill" onclick="fillPrompt('Federated Learning for Edge Devices: Differential Privacy, Quantized Model Aggregation, and Non-IID Optimization')">
+              📱 Federated Edge AI
+            </button>
+          </div>
+        </div>
+
+        <!-- Collapsible Advanced Settings (Projectees & Guide) -->
+        <div class="advanced-settings-panel" id="advancedSettingsPanel" hidden>
+          <div class="settings-grid">
+            
+            <!-- Slide Count Stepper -->
+            <div class="setting-item">
+              <label class="setting-label">Slide Deck Length</label>
+              <div class="card-stepper-pills" id="cardCountPills">
+                <button type="button" class="card-num-pill" data-count="6">6 slides (Brief)</button>
+                <button type="button" class="card-num-pill" data-count="8">8 slides (Standard)</button>
+                <button type="button" class="card-num-pill active" data-count="10">10 slides (Comprehensive)</button>
+                <button type="button" class="card-num-pill" data-count="14">14 slides (Full Defense Deck)</button>
+              </div>
+            </div>
+
+            <!-- Tone Selector -->
+            <div class="setting-item">
+              <label class="setting-label">Academic Rigor / Tone</label>
+              <div class="tone-pills" id="tonePills">
+                <button type="button" class="tone-pill active" data-tone="academic">🎓 Academic Defense</button>
+                <button type="button" class="tone-pill" data-tone="professional">💼 Engineering Review</button>
+                <button type="button" class="tone-pill" data-tone="creative">⚡ Technical Colloquium</button>
+              </div>
+            </div>
+
+            <!-- College Credentials -->
+            <div class="setting-item full-width">
+              <label class="setting-label">Institutional Affiliation & Advisor (Optional)</label>
+              <div class="details-inputs-row">
+                <input type="text" id="inputInstitution" class="gamma-input" placeholder="College / University (e.g. Stanford University)" />
+                <input type="text" id="inputDepartment" class="gamma-input" placeholder="Department (e.g. Dept of Computer Science)" />
+                <input type="text" id="inputGuide" class="gamma-input" placeholder="Faculty Advisor / Mentor (e.g. Dr. Alex Morgan)" />
+              </div>
+            </div>
+
+            <!-- Projectees (Team Members) -->
+            <div class="setting-item full-width">
+              <label class="setting-label">Authors / Team Members (Optional)</label>
+              <input type="text" id="inputTeamMembers" class="gamma-input" placeholder="Comma-separated student names (e.g. Alex Chen, Sarah Jenkins, David Kumar)" />
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Primary Action Bar -->
+        <div class="prompt-action-bar">
+          <button type="button" class="btn-gamma-primary" id="btnGenerateOutline" onclick="startGenerateOutline()">
+            <span class="btn-sparkle-anim">✨</span>
+            <span class="btn-main-text">Generate Presentation Outline</span>
+            <span class="btn-shortcut">Review sections, tables & flows first</span>
+          </button>
+
+          <button type="button" class="btn-gamma-secondary" id="btnInstantGenerate" onclick="startDirectPptxDownload()">
+            <span class="btn-icon">⬇</span>
+            <span>Download .PPTX Directly</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ──────────────── VIEW 2: INTERACTIVE OUTLINE STUDIO ──────────────── -->
+    <section class="gamma-view" id="viewOutline" hidden>
+      <div class="outline-studio-container">
+        
+        <div class="outline-header-banner">
+          <div>
+            <div class="view-tag">STEP 2 OF 3: STRUCTURE REVIEW</div>
+            <h2 class="view-title">Review & Customize Presentation Outline</h2>
+            <p class="view-subtitle">High-quantity, data-dense slides: split metric cards, literature matrices, algorithm workflows, and future roadmaps.</p>
+          </div>
+          <div class="outline-stats-pill" id="outlineStatsPill">
+            10 Cards Planned
+          </div>
+        </div>
+
+        <!-- Outline Stack List -->
+        <div class="outline-card-stack" id="outlineCardStack">
+          <!-- Injected dynamically by JS -->
+        </div>
+
+        <!-- Add Card Button -->
+        <div class="outline-add-card-wrap">
+          <button type="button" class="btn-outline-add" onclick="addNewOutlineCard()">
+            <span class="add-icon">+</span> Add New Section to Deck
+          </button>
+        </div>
+
+        <!-- Outline Sticky Footer -->
+        <div class="outline-bottom-bar">
+          <button type="button" class="btn-outline-back" onclick="switchView('prompt')">
+            ← Back to Prompt
+          </button>
+          <button type="button" class="btn-outline-proceed" id="btnGenerateFromOutline" onclick="generateCardsFromOutline()">
+            <span>✨ Generate Full Slide Deck (Open Studio)</span>
+            <span class="proceed-arrow">→</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ──────────────── VIEW 3: LIVE GAMMA DECK STUDIO ──────────────── -->
+    <section class="gamma-view" id="viewDeck" hidden>
+      <div class="deck-studio-layout">
+
+        <!-- Top Canvas Toolbelt -->
+        <div class="deck-studio-toolbar">
+          <div class="toolbar-left">
+            <span class="deck-cards-count-badge" id="deckCardsBadge">10 CARDS</span>
+            <span class="editable-hint">💡 Click any text, table cell, or metric to edit live in browser</span>
+          </div>
+          <div class="toolbar-right">
+            <button type="button" class="btn-tool" onclick="addNewSlideToDeck()">
+              <span>+</span> Add Card
+            </button>
+            <button type="button" class="btn-tool" onclick="toggleThemeModal()">
+              <span>🎨</span> Change Theme
+            </button>
+            <button type="button" class="btn-tool highlight" onclick="startPresentationMode()">
+              <span>▶</span> Present Fullscreen
+            </button>
+            <button type="button" class="btn-tool primary" onclick="exportCurrentDeckPptx()">
+              <span>⬇</span> Download Clean .PPTX
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Cards Stream (Gamma Infinite Canvas) -->
+        <div class="cards-canvas-stream" id="cardsCanvasStream">
+          <!-- Rendered dynamically by JS -->
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ════════════════════ THEME SELECTOR MODAL ════════════════════ -->
+  <div class="gamma-modal-overlay" id="themeModalOverlay" hidden onclick="closeThemeModal(event)">
+    <div class="theme-modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">Select Presentation Theme</h3>
+          <p class="modal-subtitle">Pick your visual identity. All cards, tables & PPTX export update instantly.</p>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="toggleThemeModal()">✕</button>
+      </div>
+
+      <div class="themes-selector-grid" id="themesSelectorGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ PRESENTATION MODE (FULLSCREEN) ════════════════════ -->
+  <div class="present-fullscreen-overlay" id="presentOverlay" hidden>
+    <div class="present-top-bar">
+      <div class="present-deck-title" id="presentTitle">Presentation</div>
+      <div class="present-slide-counter" id="presentCounter">Card 1 / 10</div>
+      <button type="button" class="btn-exit-present" onclick="exitPresentationMode()">✕ Exit (Esc)</button>
+    </div>
+
+    <div class="present-card-container" id="presentCardContainer">
+      <!-- Active slide rendered here -->
+    </div>
+
+    <div class="present-bottom-dock">
+      <button type="button" class="present-nav-btn" onclick="prevPresentSlide()">◀ Previous</button>
+      <div class="present-dots" id="presentDots"></div>
+      <button type="button" class="present-nav-btn" onclick="nextPresentSlide()">Next ▶</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════ LOADING SPINNER OVERLAY ════════════════════ -->
+  <div class="gamma-loading-overlay" id="gammaLoadingOverlay" hidden>
+    <div class="gamma-loading-box">
+      <div class="loading-sparkle-halo">
+        <div class="sparkle-ring"></div>
+        <span class="sparkle-core">✦</span>
+      </div>
+      <h3 class="loading-main-title" id="loadingMainTitle">Synthesizing project deck…</h3>
+      <p class="loading-sub-text" id="loadingSubText">Building tables, metric flows, and research matrices</p>
+      
+      <div class="loading-bar-track">
+        <div class="loading-bar-fill" id="loadingBarFill"></div>
+      </div>
+
+      <div class="loading-step-chips" id="loadingStepsList">
+        <span class="l-step active">✦ Formulating academic objectives</span>
+        <span class="l-step">✦ Compiling literature matrix & research gap</span>
+        <span class="l-step">✦ Structuring algorithm pipeline & risk tiers</span>
+        <span class="l-step">✦ Packaging watermark-free presentation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ NOTIFICATION TOAST ════════════════════ -->
+  <div class="gamma-toast" id="gammaToast" hidden>
+    <span class="toast-glyph" id="toastGlyph">🎉</span>
+    <div class="toast-body">
+      <strong id="toastTitle">Success</strong>
+      <p id="toastMessage">Your presentation is ready.</p>
+    </div>
+    <button type="button" class="toast-dismiss" onclick="hideToast()">✕</button>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

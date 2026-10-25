@@ -1,0 +1,5 @@
+/target/
+/*.pptx
+/.idea/
+/.vscode/
+*.iml
