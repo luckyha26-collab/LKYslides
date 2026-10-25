@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: lkyslides
+    runtime: docker
+    plan: free
+    region: ohio
+    branch: master
+    envVars:
+      - key: PORT
+        value: 8081

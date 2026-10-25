@@ -1,9 +1,9 @@
 server:
-  port: 8081
+  port: ${PORT:8081}
 
 spring:
   application:
-    name: slidegen
+    name: lkyslides
   servlet:
     multipart:
       max-file-size: 50MB
